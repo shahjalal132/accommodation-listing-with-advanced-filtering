@@ -15,7 +15,7 @@ class Admin_Sub_Menu {
     }
 
     public function setup_hooks() {
-        add_action( 'admin_menu', [ $this, 'register_admin_sub_menu' ] );
+        // add_action( 'admin_menu', [ $this, 'register_admin_sub_menu' ] );
         add_filter( 'plugin_action_links_' . PLUGIN_BASE_NAME, [ $this, 'add_plugin_action_links' ] );
 
         // save api credentials
@@ -73,3 +73,4 @@ class Admin_Sub_Menu {
     }
 
 }
+
