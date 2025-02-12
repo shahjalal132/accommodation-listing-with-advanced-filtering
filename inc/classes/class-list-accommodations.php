@@ -18,7 +18,156 @@ class List_Accommodations {
     }
 
     public function setup_hooks() {
+        // list accommodation shortcode
         add_shortcode( 'list_accommodations', [ $this, 'list_accommodations_callback' ] );
+
+        // handle filter ajax request
+        add_action( 'wp_ajax_filter_accommodations', [ $this, 'filter_accommodations_callback' ] );
+        add_action( 'wp_ajax_nopriv_filter_accommodations', [ $this, 'filter_accommodations_callback' ] );
+    }
+
+    function filter_accommodations_callback() {
+        if ( isset( $_POST['filters'] ) ) {
+            $filters = $_POST['filters'];
+            echo $this->get_filtered_accommodations( $filters );
+        }
+        wp_die();
+    }
+
+    public function get_filtered_accommodations( $filters ) {
+
+        // Default query arguments
+        $args = [
+            'post_type'      => 'property',
+            'posts_per_page' => -1,
+            'orderby'        => 'title',
+            'order'          => 'ASC',
+        ];
+
+        // If filters are set, modify the query
+        if ( !empty( $filters ) ) {
+            $meta_query = [ 'relation' => 'AND' ];
+
+            // Bedroom Type Filter
+            if ( !empty( $filters['bedroom_type'] ) ) {
+                $meta_query[] = [
+                    'key'     => 'bedrooms',
+                    'value'   => $filters['bedroom_type'],
+                    'compare' => 'IN',
+                ];
+            }
+
+            // View Type Filter
+            if ( !empty( $filters['view_type'] ) ) {
+                $meta_query[] = [
+                    'key'     => 'view_type',
+                    'value'   => $filters['view_type'],
+                    'compare' => 'IN',
+                ];
+            }
+
+            // Style & Features Filter
+            if ( !empty( $filters['style_features'] ) ) {
+                $meta_query[] = [
+                    'key'     => 'style_features',
+                    'value'   => $filters['style_features'],
+                    'compare' => 'IN',
+                ];
+            }
+
+            // Building Name Filter
+            if ( !empty( $filters['building_name'] ) ) {
+                $meta_query[] = [
+                    'key'     => 'building_name',
+                    'value'   => $filters['building_name'],
+                    'compare' => 'IN',
+                ];
+            }
+
+            // Add meta query if any filter is applied
+            if ( count( $meta_query ) > 1 ) {
+                $args['meta_query'] = $meta_query;
+            }
+        }
+
+        // Get accommodations based on query
+        $properties = new \WP_Query( $args );
+        ?>
+
+        <div class="row g-4">
+
+            <?php
+            // If there are accommodations, display them
+            if ( $properties->have_posts() ) :
+                while ( $properties->have_posts() ) :
+                    $properties->the_post();
+
+                    // get post id
+                    $post_id = get_the_ID();
+
+                    // get post thumbnail
+                    $_thumbnail            = get_the_post_thumbnail_url( $post_id );
+                    $placeholder_thumbnail = PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png';
+                    $thumbnail             = $_thumbnail ? $_thumbnail : $placeholder_thumbnail;
+
+                    // get post permalink
+                    $permalink = get_the_permalink( $post_id );
+
+                    // get post title
+                    $title = get_the_title( $post_id );
+                    // get address
+                    $address = get_post_meta( $post_id, 'Address', true );
+                    // get total guest
+                    $total_guest = get_post_meta( $post_id, 'total_guests', true );
+                    // get total bed
+                    $total_beds = get_post_meta( $post_id, 'bedrooms', true );
+                    // get total bath
+                    $total_baths = get_post_meta( $post_id, 'bathrooms', true );
+                    // get total car
+                    $total_cars = get_post_meta( $post_id, 'car_park', true );
+                    // get price
+                    $price = get_post_meta( $post_id, 'price', true );
+
+                    ?>
+
+                    <div class="col-md-4">
+                        <!-- start: accommodation card -->
+                        <div class="card common-shadow">
+                            <!-- thumbnail image -->
+                            <a href="<?= $permalink ?>"><img src="<?= $thumbnail ?>" class="card-img-top" alt="<?= $title ?>"></a>
+                            <div class="card-body">
+                                <!-- title -->
+                                <h5 class="card-title"><a href="<?= $permalink ?>"
+                                        class="text-dark text-decoration-none"><?= $title ?></a>
+                                </h5>
+                                <!-- address -->
+                                <a href="<?= $permalink ?>" class="mt-3 mb-3"><?= $address ?></a>
+                                <hr class="mt-4">
+                                <!-- room information -->
+                                <p class="mt-3 mb-3 cfs-15"><i class="fa-solid fa-person"></i> <?= $total_guest ?> Guest
+                                    &nbsp; <i class="fa-solid fa-bed"></i> <?= $total_beds ?> Bed
+                                    &nbsp; <i class="fa-solid fa-bath"></i> <?= $total_baths ?> Bath
+                                    &nbsp; <i class="fa-solid fa-car"></i> <?= $total_cars ?> Car
+                                </p>
+                                <hr class="mb-4">
+                                <!-- price -->
+                                <a href="<?= $permalink ?>" class=""><strong>From $<?= $price ?> per
+                                        night</strong></a>
+                            </div>
+                        </div>
+                        <!-- end: accommodation card -->
+                    </div>
+
+                <?php endwhile;
+            else :
+                echo "<p>No accommodations found.</p>";
+            endif;
+
+            ?>
+        </div>
+
+        <?php return ob_get_clean();
+
     }
 
     public function list_accommodations_callback() {
@@ -29,163 +178,96 @@ class List_Accommodations {
             <div class="row">
                 <!-- Accommodation Listings -->
                 <div class="col-md-9">
-                    <div class="row g-4">
+                    <div id="accommodations-wrapper">
+                        <div class="row g-4">
 
-                        <?php
+                            <?php
 
-                        // args for get accommodations 
-                        $args = [
-                            'post_type' => 'property',
-                            'posts_per_page' => -1, 
-                            'orderby'   => 'title',
-                            'order'     => 'ASC',
-                        ];
+                            // Default query arguments
+                            $args = [
+                                'post_type'      => 'property',
+                                'posts_per_page' => -1,
+                                'orderby'        => 'title',
+                                'order'          => 'ASC',
+                            ];
 
-                        // get accommodations
-                        $properties = new \WP_Query( $args );
+                            // Get accommodations based on query
+                            $properties = new \WP_Query( $args );
 
-                        // if there are accommodations
-                        if ( $properties->have_posts() ) :
-                            while ( $properties->have_posts() ) :
-                                $properties->the_post();
+                            // if there are accommodations
+                            if ( $properties->have_posts() ) :
+                                while ( $properties->have_posts() ) :
+                                    $properties->the_post();
 
-                                // get post id
-                                $post_id = get_the_ID();
+                                    // get post id
+                                    $post_id = get_the_ID();
 
-                                // get post thumbnail
-                                $_thumbnail            = get_the_post_thumbnail_url( $post_id );
-                                $placeholder_thumbnail = PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png';
-                                $thumbnail             = $_thumbnail ? $_thumbnail : $placeholder_thumbnail;
+                                    // get post thumbnail
+                                    $_thumbnail            = get_the_post_thumbnail_url( $post_id );
+                                    $placeholder_thumbnail = PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png';
+                                    $thumbnail             = $_thumbnail ? $_thumbnail : $placeholder_thumbnail;
 
-                                // get post permalink
-                                $permalink = get_the_permalink( $post_id );
+                                    // get post permalink
+                                    $permalink = get_the_permalink( $post_id );
 
-                                // get post title
-                                $title = get_the_title( $post_id );
-                                // get address
-                                $address = get_post_meta( $post_id, 'Address', true );
-                                // get total guest
-                                $total_guest = get_post_meta( $post_id, 'total_guests', true );
-                                // get total bed
-                                $total_beds = get_post_meta( $post_id, 'bedrooms', true );
-                                // get total bath
-                                $total_baths = get_post_meta( $post_id, 'bathrooms', true );
-                                // get total car
-                                $total_cars = get_post_meta( $post_id, 'car_park', true );
-                                // get price
-                                $price = get_post_meta( $post_id, 'price', true );
+                                    // get post title
+                                    $title = get_the_title( $post_id );
+                                    // get address
+                                    $address = get_post_meta( $post_id, 'Address', true );
+                                    // get total guest
+                                    $total_guest = get_post_meta( $post_id, 'total_guests', true );
+                                    // get total bed
+                                    $total_beds = get_post_meta( $post_id, 'bedrooms', true );
+                                    // get total bath
+                                    $total_baths = get_post_meta( $post_id, 'bathrooms', true );
+                                    // get total car
+                                    $total_cars = get_post_meta( $post_id, 'car_park', true );
+                                    // get price
+                                    $price = get_post_meta( $post_id, 'price', true );
 
-                                ?>
+                                    ?>
 
-                                <div class="col-md-4">
-                                    <!-- start: accommodation card -->
-                                    <div class="card common-shadow">
-                                        <!-- thumbnail image -->
-                                        <a href="<?= $permalink ?>"><img src="<?= $thumbnail ?>" class="card-img-top"
-                                                alt="<?= $title ?>"></a>
-                                        <div class="card-body">
-                                            <!-- title -->
-                                            <h5 class="card-title"><a href="<?= $permalink ?>"
-                                                    class="text-dark text-decoration-none"><?= $title ?></a>
-                                            </h5>
-                                            <!-- address -->
-                                            <a href="<?= $permalink ?>" class="mt-3 mb-3"><?= $address ?></a>
-                                            <hr class="mt-4">
-                                            <!-- room information -->
-                                            <p class="mt-3 mb-3 cfs-15"><i class="fa-solid fa-person"></i> <?= $total_guest ?> Guest &nbsp; <i
-                                                    class="fa-solid fa-bed"></i> <?= $total_beds ?> Bed
-                                                &nbsp; <i class="fa-solid fa-bath"></i> <?= $total_baths ?> Bath
-                                                &nbsp; <i class="fa-solid fa-car"></i> <?= $total_cars ?> Car
-                                            </p>
-                                            <hr class="mb-4">
-                                            <!-- price -->
-                                            <a href="<?= $permalink ?>" class=""><strong>From $<?= $price ?> per
-                                                    night</strong></a>
+                                    <div class="col-md-4">
+                                        <!-- start: accommodation card -->
+                                        <div class="card common-shadow">
+                                            <!-- thumbnail image -->
+                                            <a href="<?= $permalink ?>"><img src="<?= $thumbnail ?>" class="card-img-top"
+                                                    alt="<?= $title ?>"></a>
+                                            <div class="card-body">
+                                                <!-- title -->
+                                                <h5 class="card-title"><a href="<?= $permalink ?>"
+                                                        class="text-dark text-decoration-none"><?= $title ?></a>
+                                                </h5>
+                                                <!-- address -->
+                                                <a href="<?= $permalink ?>" class="mt-3 mb-3"><?= $address ?></a>
+                                                <hr class="mt-4">
+                                                <!-- room information -->
+                                                <p class="mt-3 mb-3 cfs-15"><i class="fa-solid fa-person"></i> <?= $total_guest ?> Guest
+                                                    &nbsp; <i class="fa-solid fa-bed"></i> <?= $total_beds ?> Bed
+                                                    &nbsp; <i class="fa-solid fa-bath"></i> <?= $total_baths ?> Bath
+                                                    &nbsp; <i class="fa-solid fa-car"></i> <?= $total_cars ?> Car
+                                                </p>
+                                                <hr class="mb-4">
+                                                <!-- price -->
+                                                <a href="<?= $permalink ?>" class=""><strong>From $<?= $price ?> per
+                                                        night</strong></a>
+                                            </div>
                                         </div>
+                                        <!-- end: accommodation card -->
                                     </div>
-                                    <!-- end: accommodation card -->
-                                </div>
 
-                            <?php endwhile;
-                        endif;
+                                <?php endwhile;
+                            endif;
 
-                        ?>
+                            ?>
 
+                        </div>
                     </div>
                 </div>
+
                 <!-- Filter Sidebar -->
                 <div class="col-md-3">
-                    <div class="filter-sidebar">
-                        <h5>Filters</h5>
-                        <hr>
-                        <h6>Bedroom Type</h6>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="1bedroom">
-                            <label class="form-check-label" for="1bedroom">1-Bedroom</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="2bedroom">
-                            <label class="form-check-label" for="2bedroom">2-Bedroom</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="3bedroom">
-                            <label class="form-check-label" for="3bedroom">3-Bedroom</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="4bedroom">
-                            <label class="form-check-label" for="4bedroom">4-Bedroom</label>
-                        </div>
-                        <hr>
-                        <h6>View Type</h6>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="partial">
-                            <label class="form-check-label" for="partial">Partial Ocean View</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="full">
-                            <label class="form-check-label" for="full">Full Ocean View</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="garden">
-                            <label class="form-check-label" for="garden">Garden View</label>
-                        </div>
-                        <hr>
-                        <h6>Style & Features</h6>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="standard">
-                            <label class="form-check-label" for="standard">Standard</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="superior">
-                            <label class="form-check-label" for="superior">Superior</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="luxury">
-                            <label class="form-check-label" for="luxury">Luxury</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="penthouse">
-                            <label class="form-check-label" for="penthouse">Penthouse</label>
-                        </div>
-                        <hr>
-                        <h6>Building Name</h6>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="azzure">
-                            <label class="form-check-label" for="azzure">Azzure</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="oceanus">
-                            <label class="form-check-label" for="oceanus">Oceanus</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="seanna">
-                            <label class="form-check-label" for="seanna">Seanna</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="zinc">
-                            <label class="form-check-label" for="zinc">Zinc</label>
-                        </div>
-                    </div>
+                    <?php include_once PLUGIN_BASE_PATH . '/inc/components/filters.php' ?>
                 </div>
             </div>
         </div>

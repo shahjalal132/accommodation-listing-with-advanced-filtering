@@ -63,6 +63,8 @@ class Enqueue_Assets {
         // enqueue public js    
         wp_enqueue_script( "wpb-bootstrap", PLUGIN_PUBLIC_ASSETS_URL . "/js/bootstrap.bundle.min.js", [], false, true );
         wp_enqueue_script( "wpb-public-js", PLUGIN_PUBLIC_ASSETS_URL . "/js/public-script.js", [ 'jquery' ], time(), true );
+        // localize script to send wordpress ajax url
+        wp_localize_script( "wpb-public-js", "wpb_public_localize", array( "ajax_url" => admin_url( "admin-ajax.php" ) ) );
 
     }
 
