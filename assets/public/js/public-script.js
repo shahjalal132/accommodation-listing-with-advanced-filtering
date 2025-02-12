@@ -16,6 +16,8 @@
         filters[name].push(value);
       });
 
+      console.log(filters);
+
       // AJAX request
       $.ajax({
         url: wpb_public_localize.ajax_url,
@@ -28,6 +30,7 @@
           $("#accommodations-wrapper").html("<p>Loading...</p>");
         },
         success: function (response) {
+          console.log(response);
           $("#accommodations-wrapper").html(response);
         },
       });

@@ -24,6 +24,9 @@ class List_Accommodations {
         // handle filter ajax request
         add_action( 'wp_ajax_filter_accommodations', [ $this, 'filter_accommodations_callback' ] );
         add_action( 'wp_ajax_nopriv_filter_accommodations', [ $this, 'filter_accommodations_callback' ] );
+
+        // TODO: Create categories. and filter by category
+
     }
 
     function filter_accommodations_callback() {
@@ -35,6 +38,8 @@ class List_Accommodations {
     }
 
     public function get_filtered_accommodations( $filters ) {
+
+        put_program_logs( 'filters: ' . json_encode( $filters ) );
 
         // Default query arguments
         $args = [
@@ -90,8 +95,16 @@ class List_Accommodations {
             }
         }
 
+        // put_program_logs( 'args: ' . json_encode( $args ) );
+
         // Get accommodations based on query
         $properties = new \WP_Query( $args );
+
+        // get how many accommodations found
+        $total_accommodations = $properties->found_posts;
+        put_program_logs( 'total_accommodations: ' . $total_accommodations );
+
+        ob_start();
         ?>
 
         <div class="row g-4">
