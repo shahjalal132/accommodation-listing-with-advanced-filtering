@@ -31,78 +31,84 @@ class List_Accommodations {
                 <div class="col-md-9">
                     <div class="row g-4">
 
-                        <div class="col-md-4">
-                            <!-- start: accommodation card -->
-                            <div class="card common-shadow">
-                                <!-- thumbnail image -->
-                                <a href="#"><img src="<?= PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png' ?>"
-                                        class="card-img-top" alt="Apartment Image"></a>
-                                <div class="card-body">
-                                    <!-- title -->
-                                    <h5 class="card-title"><a href="#" class="text-dark text-decoration-none">Three Bedroom
-                                            Superior Partial Ocean View Apartment – Zinc</a></h5>
-                                    <!-- address -->
-                                    <a href="#" class="mt-3 mb-3">42 Bokarina Boulevard, Bokarina 4575</a>
-                                    <!-- room information -->
-                                    <p class="mt-2"><i class="fa-solid fa-person"></i> 6 Guest &nbsp; <i
-                                            class="fa-solid fa-bed"></i> 3 Bed &nbsp; <i class="fa-solid fa-bath"></i> 2 Bath
-                                        &nbsp; <i class="fa-solid fa-car"></i> 3 Car
-                                    </p>
-                                    <!-- price -->
-                                    <a href="#"><strong>From $375 - $1750 per night</strong></a>
-                                </div>
-                            </div>
-                            <!-- end: accommodation card -->
-                        </div>
+                        <?php
 
-                        <div class="col-md-4">
-                            <!-- start: accommodation card -->
-                            <div class="card common-shadow">
-                                <!-- thumbnail image -->
-                                <a href="#"><img src="<?= PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png' ?>"
-                                        class="card-img-top" alt="Apartment Image"></a>
-                                <div class="card-body">
-                                    <!-- title -->
-                                    <h5 class="card-title"><a href="#" class="text-dark text-decoration-none">Three Bedroom
-                                            Superior Partial Ocean View Apartment – Zinc</a></h5>
-                                    <!-- address -->
-                                    <a href="#" class="mt-3 mb-3">42 Bokarina Boulevard, Bokarina 4575</a>
-                                    <!-- room information -->
-                                    <p class="mt-2"><i class="fa-solid fa-person"></i> 6 Guest &nbsp; <i
-                                            class="fa-solid fa-bed"></i> 3 Bed &nbsp; <i class="fa-solid fa-bath"></i> 2 Bath
-                                        &nbsp; <i class="fa-solid fa-car"></i> 3 Car
-                                    </p>
-                                    <!-- price -->
-                                    <a href="#"><strong>From $375 - $1750 per night</strong></a>
-                                </div>
-                            </div>
-                            <!-- end: accommodation card -->
-                        </div>
+                        // args for get accommodations 
+                        $args = [
+                            'post_type' => 'property',
+                            'posts_per_page' => -1, 
+                            'orderby'   => 'title',
+                            'order'     => 'ASC',
+                        ];
 
-                        <div class="col-md-4">
-                            <!-- start: accommodation card -->
-                            <div class="card common-shadow">
-                                <!-- thumbnail image -->
-                                <a href="#"><img src="<?= PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png' ?>"
-                                        class="card-img-top" alt="Apartment Image"></a>
-                                <div class="card-body">
-                                    <!-- title -->
-                                    <h5 class="card-title"><a href="#" class="text-dark text-decoration-none">Three Bedroom
-                                            Superior Partial Ocean View Apartment – Zinc</a></h5>
-                                    <!-- address -->
-                                    <a href="#" class="mt-3 mb-3">42 Bokarina Boulevard, Bokarina 4575</a>
-                                    <!-- room information -->
-                                    <p class="mt-2"><i class="fa-solid fa-person"></i> 6 Guest &nbsp; <i
-                                            class="fa-solid fa-bed"></i> 3 Bed &nbsp; <i class="fa-solid fa-bath"></i> 2 Bath
-                                        &nbsp; <i class="fa-solid fa-car"></i> 3 Car
-                                    </p>
-                                    <!-- price -->
-                                    <a href="#"><strong>From $375 - $1750 per night</strong></a>
+                        // get accommodations
+                        $properties = new \WP_Query( $args );
+
+                        // if there are accommodations
+                        if ( $properties->have_posts() ) :
+                            while ( $properties->have_posts() ) :
+                                $properties->the_post();
+
+                                // get post id
+                                $post_id = get_the_ID();
+
+                                // get post thumbnail
+                                $_thumbnail            = get_the_post_thumbnail_url( $post_id );
+                                $placeholder_thumbnail = PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png';
+                                $thumbnail             = $_thumbnail ? $_thumbnail : $placeholder_thumbnail;
+
+                                // get post permalink
+                                $permalink = get_the_permalink( $post_id );
+
+                                // get post title
+                                $title = get_the_title( $post_id );
+                                // get address
+                                $address = get_post_meta( $post_id, 'Address', true );
+                                // get total guest
+                                $total_guest = get_post_meta( $post_id, 'total_guests', true );
+                                // get total bed
+                                $total_beds = get_post_meta( $post_id, 'bedrooms', true );
+                                // get total bath
+                                $total_baths = get_post_meta( $post_id, 'bathrooms', true );
+                                // get total car
+                                $total_cars = get_post_meta( $post_id, 'car_park', true );
+                                // get price
+                                $price = get_post_meta( $post_id, 'price', true );
+
+                                ?>
+
+                                <div class="col-md-4">
+                                    <!-- start: accommodation card -->
+                                    <div class="card common-shadow">
+                                        <!-- thumbnail image -->
+                                        <a href="<?= $permalink ?>"><img src="<?= $thumbnail ?>" class="card-img-top"
+                                                alt="<?= $title ?>"></a>
+                                        <div class="card-body">
+                                            <!-- title -->
+                                            <h5 class="card-title"><a href="<?= $permalink ?>"
+                                                    class="text-dark text-decoration-none"><?= $title ?></a>
+                                            </h5>
+                                            <!-- address -->
+                                            <a href="<?= $permalink ?>" class="mt-3 mb-3"><?= $address ?></a>
+                                            <!-- room information -->
+                                            <p class="mt-2"><i class="fa-solid fa-person"></i> <?= $total_guest ?> Guest &nbsp; <i
+                                                    class="fa-solid fa-bed"></i> <?= $total_beds ?> Bed
+                                                &nbsp; <i class="fa-solid fa-bath"></i> <?= $total_baths ?> Bath
+                                                &nbsp; <i class="fa-solid fa-car"></i> <?= $total_cars ?> Car
+                                            </p>
+                                            <!-- price -->
+                                            <a href="<?= $permalink ?>" class=""><strong>From $<?= $price ?> per
+                                                    night</strong></a>
+                                        </div>
+                                    </div>
+                                    <!-- end: accommodation card -->
                                 </div>
-                            </div>
-                            <!-- end: accommodation card -->
-                        </div>
-                        
+
+                            <?php endwhile;
+                        endif;
+
+                        ?>
+
                     </div>
                 </div>
                 <!-- Filter Sidebar -->
