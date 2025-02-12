@@ -90,12 +90,14 @@ class List_Accommodations {
                                             </h5>
                                             <!-- address -->
                                             <a href="<?= $permalink ?>" class="mt-3 mb-3"><?= $address ?></a>
+                                            <hr class="mt-4">
                                             <!-- room information -->
-                                            <p class="mt-2"><i class="fa-solid fa-person"></i> <?= $total_guest ?> Guest &nbsp; <i
+                                            <p class="mt-3 mb-3 cfs-15"><i class="fa-solid fa-person"></i> <?= $total_guest ?> Guest &nbsp; <i
                                                     class="fa-solid fa-bed"></i> <?= $total_beds ?> Bed
                                                 &nbsp; <i class="fa-solid fa-bath"></i> <?= $total_baths ?> Bath
                                                 &nbsp; <i class="fa-solid fa-car"></i> <?= $total_cars ?> Car
                                             </p>
+                                            <hr class="mb-4">
                                             <!-- price -->
                                             <a href="<?= $permalink ?>" class=""><strong>From $<?= $price ?> per
                                                     night</strong></a>
