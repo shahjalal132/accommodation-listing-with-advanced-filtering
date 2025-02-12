@@ -25,7 +25,162 @@ class List_Accommodations {
         ob_start();
         ?>
 
-        <h1>Accommodations</h1>
+        <div class="container mt-4">
+            <div class="row">
+                <!-- Accommodation Listings -->
+                <div class="col-md-9">
+                    <div class="row g-4">
+
+                        <div class="col-md-4">
+                            <!-- start: accommodation card -->
+                            <div class="card common-shadow">
+                                <!-- thumbnail image -->
+                                <a href="#"><img src="<?= PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png' ?>"
+                                        class="card-img-top" alt="Apartment Image"></a>
+                                <div class="card-body">
+                                    <!-- title -->
+                                    <h5 class="card-title"><a href="#" class="text-dark text-decoration-none">Three Bedroom
+                                            Superior Partial Ocean View Apartment – Zinc</a></h5>
+                                    <!-- address -->
+                                    <a href="#" class="mt-3 mb-3">42 Bokarina Boulevard, Bokarina 4575</a>
+                                    <!-- room information -->
+                                    <p class="mt-2"><i class="fa-solid fa-person"></i> 6 Guest &nbsp; <i
+                                            class="fa-solid fa-bed"></i> 3 Bed &nbsp; <i class="fa-solid fa-bath"></i> 2 Bath
+                                        &nbsp; <i class="fa-solid fa-car"></i> 3 Car
+                                    </p>
+                                    <!-- price -->
+                                    <a href="#"><strong>From $375 - $1750 per night</strong></a>
+                                </div>
+                            </div>
+                            <!-- end: accommodation card -->
+                        </div>
+
+                        <div class="col-md-4">
+                            <!-- start: accommodation card -->
+                            <div class="card common-shadow">
+                                <!-- thumbnail image -->
+                                <a href="#"><img src="<?= PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png' ?>"
+                                        class="card-img-top" alt="Apartment Image"></a>
+                                <div class="card-body">
+                                    <!-- title -->
+                                    <h5 class="card-title"><a href="#" class="text-dark text-decoration-none">Three Bedroom
+                                            Superior Partial Ocean View Apartment – Zinc</a></h5>
+                                    <!-- address -->
+                                    <a href="#" class="mt-3 mb-3">42 Bokarina Boulevard, Bokarina 4575</a>
+                                    <!-- room information -->
+                                    <p class="mt-2"><i class="fa-solid fa-person"></i> 6 Guest &nbsp; <i
+                                            class="fa-solid fa-bed"></i> 3 Bed &nbsp; <i class="fa-solid fa-bath"></i> 2 Bath
+                                        &nbsp; <i class="fa-solid fa-car"></i> 3 Car
+                                    </p>
+                                    <!-- price -->
+                                    <a href="#"><strong>From $375 - $1750 per night</strong></a>
+                                </div>
+                            </div>
+                            <!-- end: accommodation card -->
+                        </div>
+
+                        <div class="col-md-4">
+                            <!-- start: accommodation card -->
+                            <div class="card common-shadow">
+                                <!-- thumbnail image -->
+                                <a href="#"><img src="<?= PLUGIN_PUBLIC_ASSETS_URL . '/images/600x400.png' ?>"
+                                        class="card-img-top" alt="Apartment Image"></a>
+                                <div class="card-body">
+                                    <!-- title -->
+                                    <h5 class="card-title"><a href="#" class="text-dark text-decoration-none">Three Bedroom
+                                            Superior Partial Ocean View Apartment – Zinc</a></h5>
+                                    <!-- address -->
+                                    <a href="#" class="mt-3 mb-3">42 Bokarina Boulevard, Bokarina 4575</a>
+                                    <!-- room information -->
+                                    <p class="mt-2"><i class="fa-solid fa-person"></i> 6 Guest &nbsp; <i
+                                            class="fa-solid fa-bed"></i> 3 Bed &nbsp; <i class="fa-solid fa-bath"></i> 2 Bath
+                                        &nbsp; <i class="fa-solid fa-car"></i> 3 Car
+                                    </p>
+                                    <!-- price -->
+                                    <a href="#"><strong>From $375 - $1750 per night</strong></a>
+                                </div>
+                            </div>
+                            <!-- end: accommodation card -->
+                        </div>
+                        
+                    </div>
+                </div>
+                <!-- Filter Sidebar -->
+                <div class="col-md-3">
+                    <div class="filter-sidebar">
+                        <h5>Filters</h5>
+                        <hr>
+                        <h6>Bedroom Type</h6>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="1bedroom">
+                            <label class="form-check-label" for="1bedroom">1-Bedroom</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="2bedroom">
+                            <label class="form-check-label" for="2bedroom">2-Bedroom</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="3bedroom">
+                            <label class="form-check-label" for="3bedroom">3-Bedroom</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="4bedroom">
+                            <label class="form-check-label" for="4bedroom">4-Bedroom</label>
+                        </div>
+                        <hr>
+                        <h6>View Type</h6>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="partial">
+                            <label class="form-check-label" for="partial">Partial Ocean View</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="full">
+                            <label class="form-check-label" for="full">Full Ocean View</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="garden">
+                            <label class="form-check-label" for="garden">Garden View</label>
+                        </div>
+                        <hr>
+                        <h6>Style & Features</h6>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="standard">
+                            <label class="form-check-label" for="standard">Standard</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="superior">
+                            <label class="form-check-label" for="superior">Superior</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="luxury">
+                            <label class="form-check-label" for="luxury">Luxury</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="penthouse">
+                            <label class="form-check-label" for="penthouse">Penthouse</label>
+                        </div>
+                        <hr>
+                        <h6>Building Name</h6>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="azzure">
+                            <label class="form-check-label" for="azzure">Azzure</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="oceanus">
+                            <label class="form-check-label" for="oceanus">Oceanus</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="seanna">
+                            <label class="form-check-label" for="seanna">Seanna</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="zinc">
+                            <label class="form-check-label" for="zinc">Zinc</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <?php return ob_get_clean();
     }

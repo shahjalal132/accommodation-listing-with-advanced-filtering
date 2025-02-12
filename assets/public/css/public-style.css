@@ -1,1 +1,33 @@
-/* Public Styles CSS Codes */
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.filter-sidebar {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.filter-sidebar hr {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.filter-sidebar h6 {
+  margin-bottom: 5px !important;
+}
+
+.common-shadow {
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.common-shadow:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
