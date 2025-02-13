@@ -69,7 +69,7 @@ function wpb_plugin_activator() {
 }
 
 // Register activation hook
-register_activation_hook( __FILE__, 'wpb_plugin_activator' );
+// register_activation_hook( __FILE__, 'wpb_plugin_activator' );
 
 /**
  * The code that runs during plugin deactivation.
@@ -81,7 +81,7 @@ function wpb_plugin_deactivator() {
 }
 
 // Register deactivation hook
-register_deactivation_hook( __FILE__, 'wpb_plugin_deactivator' );
+// register_deactivation_hook( __FILE__, 'wpb_plugin_deactivator' );
 
 
 function get_plugin_instance() {
