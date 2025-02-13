@@ -55,15 +55,25 @@ class List_Accommodations {
 
     function filter_accommodations_callback() {
         if ( isset( $_POST['filters'] ) ) {
+
+            // get filters values
             $filters = $_POST['filters'];
-            echo $this->get_filtered_accommodations( $filters );
+
+            if ( !empty( $filters ) ) {
+                // get filtered accommodations
+                echo $this->get_filtered_accommodations( $filters );
+            }
+
+        } else {
+            // get all accommodations
+            echo $this->get_filtered_accommodations( [] );
         }
         wp_die();
     }
 
     public function get_filtered_accommodations( $filters ) {
 
-        // Specific query arguments
+        // Default query arguments
         $args = [
             "post_type"      => "property",
             "posts_per_page" => -1,
@@ -71,7 +81,7 @@ class List_Accommodations {
             "order"          => "ASC",
         ];
 
-        // define args based on filters
+        // Set args for filters
         if ( !empty( $filters ) ) {
             $args["tax_query"] = [
                 [
