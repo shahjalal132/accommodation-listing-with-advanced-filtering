@@ -25,7 +25,31 @@ class List_Accommodations {
         add_action( 'wp_ajax_filter_accommodations', [ $this, 'filter_accommodations_callback' ] );
         add_action( 'wp_ajax_nopriv_filter_accommodations', [ $this, 'filter_accommodations_callback' ] );
 
-        // TODO: Create categories. and filter by category
+        // get all property types (taxonomy)
+        // add_action( 'init', [ $this, 'get_property_types' ] );
+
+    }
+
+    public function get_property_types() {
+
+        $terms = get_terms( [
+            'taxonomy'   => 'property_type', // Custom taxonomy
+            'hide_empty' => false, // Include empty terms
+        ] );
+
+        $taxonomy_list = [];
+
+        if ( !empty( $terms ) && !is_wp_error( $terms ) ) {
+            foreach ( $terms as $term ) {
+                $taxonomy_list[] = [
+                    'name' => $term->name,
+                    'slug' => $term->slug,
+                ];
+            }
+        }
+
+        // log the property list
+        put_program_logs( 'property_list: ' . json_encode( $taxonomy_list ) );
 
     }
 
@@ -39,60 +63,24 @@ class List_Accommodations {
 
     public function get_filtered_accommodations( $filters ) {
 
-        put_program_logs( 'filters: ' . json_encode( $filters ) );
-
-        // Default query arguments
+        // Specific query arguments
         $args = [
-            'post_type'      => 'property',
-            'posts_per_page' => -1,
-            'orderby'        => 'title',
-            'order'          => 'ASC',
+            "post_type"      => "property",
+            "posts_per_page" => -1,
+            "orderby"        => "title",
+            "order"          => "ASC",
         ];
 
-        // If filters are set, modify the query
+        // define args based on filters
         if ( !empty( $filters ) ) {
-            $meta_query = [ 'relation' => 'AND' ];
-
-            // Bedroom Type Filter
-            if ( !empty( $filters['bedroom_type'] ) ) {
-                $meta_query[] = [
-                    'key'     => 'bedrooms',
-                    'value'   => $filters['bedroom_type'],
-                    'compare' => 'IN',
-                ];
-            }
-
-            // View Type Filter
-            if ( !empty( $filters['view_type'] ) ) {
-                $meta_query[] = [
-                    'key'     => 'view_type',
-                    'value'   => $filters['view_type'],
-                    'compare' => 'IN',
-                ];
-            }
-
-            // Style & Features Filter
-            if ( !empty( $filters['style_features'] ) ) {
-                $meta_query[] = [
-                    'key'     => 'style_features',
-                    'value'   => $filters['style_features'],
-                    'compare' => 'IN',
-                ];
-            }
-
-            // Building Name Filter
-            if ( !empty( $filters['building_name'] ) ) {
-                $meta_query[] = [
-                    'key'     => 'building_name',
-                    'value'   => $filters['building_name'],
-                    'compare' => 'IN',
-                ];
-            }
-
-            // Add meta query if any filter is applied
-            if ( count( $meta_query ) > 1 ) {
-                $args['meta_query'] = $meta_query;
-            }
+            $args["tax_query"] = [
+                [
+                    "taxonomy" => "property_type",
+                    "field"    => "slug",
+                    "terms"    => $filters,
+                    "operator" => "IN",
+                ],
+            ];
         }
 
         // put_program_logs( 'args: ' . json_encode( $args ) );
@@ -102,7 +90,7 @@ class List_Accommodations {
 
         // get how many accommodations found
         $total_accommodations = $properties->found_posts;
-        put_program_logs( 'total_accommodations: ' . $total_accommodations );
+        // put_program_logs( 'total_accommodations: ' . $total_accommodations );
 
         ob_start();
         ?>

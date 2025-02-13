@@ -5,19 +5,19 @@
     <!-- Bedroom Type -->
     <h6>Bedroom Type</h6>
     <div class="form-check">
-        <input type="checkbox" id="1-bedroom" class="form-check-input filter-checkbox" name="bedroom_type[]" value="1">
+        <input type="checkbox" id="1-bedroom" class="form-check-input filter-checkbox" name="bedroom_type[]" value="1-bedroom">
         <label class="form-check-label" for="1-bedroom">1-Bedroom</label>
     </div>
     <div class="form-check">
-        <input type="checkbox" id="2-bedroom" class="form-check-input filter-checkbox" name="bedroom_type[]" value="2">
+        <input type="checkbox" id="2-bedroom" class="form-check-input filter-checkbox" name="bedroom_type[]" value="2-bedroom">
         <label class="form-check-label" for="2-bedroom">2-Bedroom</label>
     </div>
     <div class="form-check">
-        <input type="checkbox" id="3-bedroom" class="form-check-input filter-checkbox" name="bedroom_type[]" value="3">
+        <input type="checkbox" id="3-bedroom" class="form-check-input filter-checkbox" name="bedroom_type[]" value="3-bedroom">
         <label class="form-check-label" for="3-bedroom">3-Bedroom</label>
     </div>
     <div class="form-check">
-        <input type="checkbox" id="4-bedroom" class="form-check-input filter-checkbox" name="bedroom_type[]" value="4">
+        <input type="checkbox" id="4-bedroom" class="form-check-input filter-checkbox" name="bedroom_type[]" value="4-bedroom">
         <label class="form-check-label" for="4-bedroom">4-Bedroom</label>
     </div>
 
@@ -26,7 +26,7 @@
     <!-- View Type -->
     <h6>View Type</h6>
     <div class="form-check">
-        <input type="checkbox" id="partial" class="form-check-input filter-checkbox" name="view_type[]" value="partial">
+        <input type="checkbox" id="partial" class="form-check-input filter-checkbox" name="view_type[]" value="ocean-view">
         <label class="form-check-label" for="partial">Partial Ocean View</label>
     </div>
     <div class="form-check">

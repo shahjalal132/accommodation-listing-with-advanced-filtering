@@ -3,20 +3,15 @@
     // Code here
 
     $(".filter-checkbox").on("change", function () {
-      let filters = {};
+      // initialize filters
+      let filters = [];
 
       // Collect selected filters
       $(".filter-checkbox:checked").each(function () {
-        let name = $(this).attr("name");
         let value = $(this).val();
 
-        if (!filters[name]) {
-          filters[name] = [];
-        }
-        filters[name].push(value);
+        filters.push(value);
       });
-
-      console.log(filters);
 
       // AJAX request
       $.ajax({
@@ -30,7 +25,7 @@
           $("#accommodations-wrapper").html("<p>Loading...</p>");
         },
         success: function (response) {
-          console.log(response);
+          // render accommodations
           $("#accommodations-wrapper").html(response);
         },
       });
