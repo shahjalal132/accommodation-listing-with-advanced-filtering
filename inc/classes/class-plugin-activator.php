@@ -10,7 +10,8 @@
 class Plugin_Activator {
 
     public static function activate() {
-        // Define your code here
+        register_property_taxonomies(); // Register taxonomies on activation
+        flush_rewrite_rules(); // Flush permalinks to avoid 404 errors
     }
 
 }

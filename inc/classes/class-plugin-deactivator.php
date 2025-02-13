@@ -10,7 +10,7 @@
 class Plugin_Deactivator {
 
     public static function deactivate() {
-        // Define your code here
+        flush_rewrite_rules(); // Flush permalinks on deactivation
     }
 
 }
