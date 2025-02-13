@@ -18,6 +18,6 @@ class Autoloader {
         // Admin_Top_Menu::get_instance();
         Admin_Sub_Menu::get_instance();
         List_Accommodations::get_instance();
-        Category_Taxonomy::get_instance();
+        // Category_Taxonomy::get_instance();
     }
 }
