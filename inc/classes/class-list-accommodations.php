@@ -143,7 +143,7 @@ class List_Accommodations {
 
                     <div class="col-md-4">
                         <!-- start: accommodation card -->
-                        <div class="card common-shadow">
+                        <div class="card common-shadow h-515">
                             <!-- thumbnail image -->
                             <a href="<?= $permalink ?>"><img src="<?= $thumbnail ?>" class="card-img-top" alt="<?= $title ?>"></a>
                             <div class="card-body">
@@ -185,8 +185,14 @@ class List_Accommodations {
         ob_start();
         ?>
 
-        <div class="container mt-4">
+        <div class="container-fluid mt-4">
             <div class="row">
+
+                <!-- Filter Sidebar -->
+                <div class="col-md-3">
+                    <?php include_once PLUGIN_BASE_PATH . '/inc/components/filters.php' ?>
+                </div>
+
                 <!-- Accommodation Listings -->
                 <div class="col-md-9">
                     <div id="accommodations-wrapper">
@@ -240,7 +246,7 @@ class List_Accommodations {
 
                                     <div class="col-md-4">
                                         <!-- start: accommodation card -->
-                                        <div class="card common-shadow">
+                                        <div class="card common-shadow h-515">
                                             <!-- thumbnail image -->
                                             <a href="<?= $permalink ?>"><img src="<?= $thumbnail ?>" class="card-img-top"
                                                     alt="<?= $title ?>"></a>
@@ -276,10 +282,6 @@ class List_Accommodations {
                     </div>
                 </div>
 
-                <!-- Filter Sidebar -->
-                <div class="col-md-3">
-                    <?php include_once PLUGIN_BASE_PATH . '/inc/components/filters.php' ?>
-                </div>
             </div>
         </div>
 

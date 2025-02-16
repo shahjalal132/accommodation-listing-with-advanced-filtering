@@ -35,3 +35,15 @@
 .cfs-15{
   font-size: 15px !important;
 }
+
+.min-h-500{
+  min-height: 500px !important;
+}
+
+.max-h-500{
+  max-height: 500px !important;
+}
+
+.h-515{
+  height: 515px !important;
+}
