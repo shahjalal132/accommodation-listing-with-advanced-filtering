@@ -190,7 +190,13 @@ class List_Accommodations {
 
                 <!-- Filter Sidebar -->
                 <div class="col-md-3">
-                    <?php include_once PLUGIN_BASE_PATH . '/inc/components/filters.php' ?>
+                    <div class="search-bar-section">
+                        <h5>Search</h5>
+                        <input type="text" class="form-control mt-1" id="accommodation-search" placeholder="Search accommodations">
+                    </div>
+                    <div class="filters-items">
+                        <?php include_once PLUGIN_BASE_PATH . '/inc/components/filters.php' ?>
+                    </div>
                 </div>
 
                 <!-- Accommodation Listings -->

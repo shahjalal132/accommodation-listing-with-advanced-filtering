@@ -8,7 +8,8 @@
   object-fit: cover;
 }
 
-.filter-sidebar {
+.filter-sidebar,
+.search-bar-section {
   background: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -32,18 +33,18 @@
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-.cfs-15{
+.cfs-15 {
   font-size: 15px !important;
 }
 
-.min-h-500{
+.min-h-500 {
   min-height: 500px !important;
 }
 
-.max-h-500{
+.max-h-500 {
   max-height: 500px !important;
 }
 
-.h-515{
+.h-515 {
   height: 515px !important;
 }
