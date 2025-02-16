@@ -183,6 +183,8 @@ class List_Accommodations {
 
     public function get_filtered_accommodations( $filters ) {
 
+        // put_program_logs( 'filters: ' . json_encode( $filters ) );
+
         // Default query arguments
         $args = [
             "post_type"      => "property",
@@ -193,14 +195,18 @@ class List_Accommodations {
 
         // Set args for filters
         if ( !empty( $filters ) ) {
-            $args["tax_query"] = [
-                [
+            $tax_query = [ "relation" => "AND" ];
+
+            foreach ( $filters as $filter ) {
+                $tax_query[] = [
                     "taxonomy" => "property_type",
                     "field"    => "slug",
-                    "terms"    => $filters,
-                    "operator" => "IN",
-                ],
-            ];
+                    "terms"    => [ $filter ],
+                    "operator" => "AND",
+                ];
+            }
+
+            $args["tax_query"] = $tax_query;
         }
 
         // put_program_logs( 'args: ' . json_encode( $args ) );
