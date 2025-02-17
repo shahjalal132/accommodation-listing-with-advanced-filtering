@@ -309,7 +309,7 @@ class List_Accommodations {
                     <div class="search-bar-section">
                         <h5>Search</h5>
                         <input type="text" class="form-control mt-1" id="search-accommodation"
-                            placeholder="Search accommodations">
+                            placeholder="Search Accommodation">
                     </div>
                     <div class="filters-items">
                         <?php include_once PLUGIN_BASE_PATH . '/inc/components/filters.php' ?>
